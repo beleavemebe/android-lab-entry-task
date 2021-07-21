@@ -77,6 +77,9 @@ class LoginFragment : Fragment() {
                 refreshButtons()
             }
         }
+
+        etEmail.addTextChangedListener(emailWatcher)
+        etPassword.addTextChangedListener(passwordWatcher)
     }
 
     private fun refreshButtons() {
@@ -109,7 +112,7 @@ class LoginFragment : Fragment() {
         var digitIsPresent = false
 
         password.forEach {
-            val char: Char = Character.valueOf(it.toChar())
+            val char: Char = Character.valueOf(it)
             when {
                 char.isUpperCase() -> uppercaseLetterIsPresent = true
                 char.isLowerCase() -> lowercaseLetterIsPresent = true

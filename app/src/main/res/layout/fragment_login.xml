@@ -17,6 +17,7 @@
 
     <EditText
         android:id="@+id/email_et"
+        android:drawableEnd="@drawable/ic_email_24"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/email_et_hint"
@@ -33,6 +34,7 @@
 
     <EditText
         android:id="@+id/password_et"
+        android:drawableEnd="@drawable/ic_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password_et_hint"
@@ -51,6 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register_button"
+            android:drawableEnd="@drawable/ic_reg_24"
+            android:drawableTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/login_button"
@@ -63,6 +67,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_button"
+            android:drawableEnd="@drawable/ic_login_24"
+            android:drawableTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/register_button"
             app:layout_constraintEnd_toEndOf="parent"
