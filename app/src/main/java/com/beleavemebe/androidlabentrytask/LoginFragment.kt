@@ -39,6 +39,13 @@ class LoginFragment : Fragment() {
         loginButton = view.findViewById(R.id.login_button)
 
         updateButtons(enabled=false)
+        registerButton.setOnClickListener {
+
+        }
+        loginButton.setOnClickListener {
+            val userFragment = UserFragment.newFragment()
+            setFragment(userFragment)
+        }
 
         return view
     }
@@ -80,6 +87,13 @@ class LoginFragment : Fragment() {
 
         etEmail.addTextChangedListener(emailWatcher)
         etPassword.addTextChangedListener(passwordWatcher)
+    }
+
+    private fun setFragment(fragment: Fragment) {
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 
     private fun refreshButtons() {

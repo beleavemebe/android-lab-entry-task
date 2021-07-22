@@ -7,6 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 
 class UserFragment : Fragment() {
+    companion object {
+        fun newFragment() : UserFragment {
+            return UserFragment()
+        }
+    }
+
     private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
