@@ -13,10 +13,10 @@
         android:layout_marginTop="128dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="TODO"
+        android:src="@drawable/anon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
