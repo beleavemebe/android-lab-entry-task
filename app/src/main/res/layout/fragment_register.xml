@@ -38,9 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:editable="false"
-            tools:text="saskjdjkasdhjkashd"/>
+            tools:text="please accept me"
+            android:editable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
