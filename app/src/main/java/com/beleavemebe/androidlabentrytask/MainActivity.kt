@@ -8,9 +8,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
         val currentFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_container)
 
+        // Initial fragment
         if (currentFragment == null) {
             val fragment = LoginFragment.newFragment()
             supportFragmentManager
