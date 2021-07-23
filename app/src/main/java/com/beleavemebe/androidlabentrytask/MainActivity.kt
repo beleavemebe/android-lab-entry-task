@@ -1,9 +1,15 @@
 package com.beleavemebe.androidlabentrytask
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),
+        LoginFragment.Callbacks,
+        UserFragment.Callbacks,
+        RegisterFragment.Callbacks
+{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -17,11 +23,63 @@ class MainActivity : AppCompatActivity() {
 
         // Initial fragment
         if (currentFragment == null) {
-            val fragment = LoginFragment.newFragment()
+            val fragment = LoginFragment.newInstance()
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.fragment_container, fragment)
                 .commit()
         }
+    }
+
+    private fun setLoginFragment() {
+        val fragment = LoginFragment.newInstance()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+    }
+
+    private fun setRegisterFragment(email: String, password: String) {
+        val fragment = RegisterFragment.newInstance(email, password)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun setUserFragment() {
+        val fragment = UserFragment.newInstance()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onRegister(email: String, password: String) {
+        setRegisterFragment(email, password)
+    }
+
+    override fun onLogin() {
+        setUserFragment(
+            // TODO user
+        )
+    }
+
+    override fun onLogout() {
+        setLoginFragment()
+    }
+
+    override fun onRegisterUser(email: String, password: String, name: String, surname: String) {
+        val user = User(email, password, name, surname)
+        // TODO add user to database
+        setUserFragment(
+            // TODO user
+        )
+    }
+
+    override fun onCancelRegister() {
+        setLoginFragment()
     }
 }
