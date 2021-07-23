@@ -4,6 +4,10 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
+import com.beleavemebe.androidlabentrytask.fragments.LoginFragment
+import com.beleavemebe.androidlabentrytask.fragments.RegisterFragment
+import com.beleavemebe.androidlabentrytask.fragments.UserFragment
+import com.beleavemebe.androidlabentrytask.model.User
 
 class MainActivity : AppCompatActivity(),
         LoginFragment.Callbacks,
@@ -14,6 +18,7 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Disabling night mode
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }

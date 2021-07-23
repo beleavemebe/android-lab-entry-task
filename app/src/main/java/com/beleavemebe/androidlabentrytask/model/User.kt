@@ -1,4 +1,4 @@
-package com.beleavemebe.androidlabentrytask
+package com.beleavemebe.androidlabentrytask.model
 
 data class User(
     val email: String,

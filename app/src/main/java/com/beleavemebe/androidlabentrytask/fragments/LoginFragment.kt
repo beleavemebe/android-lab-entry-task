@@ -1,37 +1,37 @@
-package com.beleavemebe.androidlabentrytask
+package com.beleavemebe.androidlabentrytask.fragments
 
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import com.beleavemebe.androidlabentrytask.R
+import com.beleavemebe.androidlabentrytask.utils.LoginArgsValidator
 
 class LoginFragment : Fragment() {
     companion object {
         private const val TAG = "LoginFragment"
-        private const val MIN_PASSWORD_LENGTH = 6
 
         fun newInstance() : LoginFragment {
             return LoginFragment()
         }
     }
 
-    private lateinit var etEmail: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var registerButton: Button
-    private lateinit var loginButton: Button
-
     interface Callbacks {
         fun onRegister(email: String, password: String)
         fun onLogin()
     }
+
+    private lateinit var etEmail: EditText
+    private lateinit var etPassword: EditText
+    private lateinit var registerButton: Button
+    private lateinit var loginButton: Button
 
     private var callbacks: Callbacks? = null
 
@@ -49,14 +49,16 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_login, container, false)
         Log.d(TAG, "onCreateView(...) called")
 
-        etEmail = view.findViewById(R.id.email_et)
-        etPassword = view.findViewById(R.id.password_et)
-        registerButton = view.findViewById(R.id.register_button)
-        loginButton = view.findViewById(R.id.login_button)
+        findViewsById(rootView)
+        initButtons()
 
+        return rootView
+    }
+
+    private fun initButtons() {
         refreshButtons()
         registerButton.setOnClickListener {
             callbacks?.onRegister(
@@ -67,8 +69,6 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
             callbacks?.onLogin()
         }
-
-        return view
     }
 
     override fun onStart() {
@@ -79,7 +79,7 @@ class LoginFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!isEmailValid(s.toString())) {
+                if (!LoginArgsValidator.isEmailValid(s.toString())) {
                     // TODO do
                 }
             }
@@ -93,7 +93,7 @@ class LoginFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!isPasswordValid(s.toString())) {
+                if (!LoginArgsValidator.isPasswordValid(s.toString())) {
                     // TODO do
                 }
             }
@@ -122,12 +122,12 @@ class LoginFragment : Fragment() {
     private fun refreshButtons() {
         val email = etEmail.text.toString()
         val password = etPassword.text.toString()
-        if (!isEmailValid(email) || !isPasswordValid(password)) {
+        if (!LoginArgsValidator.isEmailValid(email) || !LoginArgsValidator.isPasswordValid(password)) {
             updateButtons(enabled=false)
-            Log.d(TAG, "Refreshed buttons: locked")
+            Log.d(TAG, "Disabled buttons due to invalid email/password")
         } else {
             updateButtons(enabled=true)
-            Log.d(TAG, "Refreshed buttons: unlocked")
+            Log.d(TAG, "Enabled buttons, email & password are OK")
         }
     }
 
@@ -140,30 +140,10 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun isEmailValid(email: String?) : Boolean {
-        val result = Patterns.EMAIL_ADDRESS.matcher(email ?: "").matches()
-        Log.d(TAG, "Email $email is valid = $result")
-        return result
-    }
-
-    private fun isPasswordValid(password: String?) : Boolean {
-        if (password == null || password.length < MIN_PASSWORD_LENGTH) return false
-
-        var uppercaseLetterIsPresent = false
-        var lowercaseLetterIsPresent = false
-        var digitIsPresent = false
-
-        password.forEach {
-            val char: Char = Character.valueOf(it)
-            when {
-                char.isUpperCase() -> uppercaseLetterIsPresent = true
-                char.isLowerCase() -> lowercaseLetterIsPresent = true
-                char.isDigit() -> digitIsPresent = true
-            }
-        }
-
-        val result = uppercaseLetterIsPresent && lowercaseLetterIsPresent && digitIsPresent
-        Log.d(TAG, "Password $password is valid = $result")
-        return result
+    private fun findViewsById(rootView: View) {
+        etEmail = rootView.findViewById(R.id.email_et)
+        etPassword = rootView.findViewById(R.id.password_et)
+        registerButton = rootView.findViewById(R.id.register_button)
+        loginButton = rootView.findViewById(R.id.login_button)
     }
 }

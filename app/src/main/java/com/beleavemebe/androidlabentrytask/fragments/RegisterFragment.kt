@@ -1,4 +1,4 @@
-package com.beleavemebe.androidlabentrytask
+package com.beleavemebe.androidlabentrytask.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.beleavemebe.androidlabentrytask.R
 
 class RegisterFragment : Fragment() {
     companion object {
@@ -25,12 +26,21 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    interface Callbacks {
+        fun onRegisterUser(email: String,
+                           password: String,
+                           name: String,
+                           surname: String)
+        fun onCancelRegister()
+    }
+
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
     private lateinit var etName: EditText
     private lateinit var etSurname: EditText
     private lateinit var btnExit: Button
     private lateinit var btnRegister: Button
+
     private var callbacks: Callbacks? = null
 
     override fun onAttach(context: Context) {
@@ -46,13 +56,27 @@ class RegisterFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_register, container, false)
 
         findViewsById(rootView)
+        initEmailAndPasswordTVs()
+        initButtons()
 
+        return rootView
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
+    }
+
+    private fun initEmailAndPasswordTVs() {
         etEmail.setText(
             arguments?.getString(ARG_EMAIL) ?: ""
         )
         etPassword.setText(
             arguments?.getString(ARG_PASSWORD) ?: ""
         )
+    }
+
+    private fun initButtons() {
         btnExit.setOnClickListener {
             callbacks?.onCancelRegister()
         }
@@ -64,13 +88,6 @@ class RegisterFragment : Fragment() {
                 etSurname.toString()
             )
         }
-
-        return rootView
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callbacks = null
     }
 
     private fun findViewsById(rootView: View) {
@@ -80,13 +97,5 @@ class RegisterFragment : Fragment() {
         etSurname = rootView.findViewById(R.id.surname_et)
         btnExit = rootView.findViewById(R.id.exit_button)
         btnRegister = rootView.findViewById(R.id.register_button)
-    }
-
-    interface Callbacks {
-        fun onRegisterUser(email: String,
-                           password: String,
-                           name: String,
-                           surname: String)
-        fun onCancelRegister()
     }
 }
