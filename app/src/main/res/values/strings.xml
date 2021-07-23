@@ -1,9 +1,15 @@
 <resources>
     <string name="app_name">EntryTask</string>
     <string name="email">Email</string>
-    <string name="email_et_hint">Enter valid email</string>
     <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="email_et_hint">Enter valid email</string>
+    <string name="name_et_hint">Enter your name</string>
+    <string name="surname_et_hint">Enter your surname</string>
     <string name="password_et_hint">Enter password</string>
-    <string name="login_button">Log in</string>
+    <string name="login_button">Log In</string>
     <string name="register_button">Register</string>
+    <string name="exit_button">Exit</string>
+    <string name="logout_button">Log Out</string>
 </resources>
