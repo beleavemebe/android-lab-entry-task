@@ -87,13 +87,13 @@
             android:drawableTint="@color/white"
             android:text="@string/exit_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/register_button"
+            app:layout_constraintEnd_toStartOf="@id/register_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
         </Button>
 
         <Button
-            android:id="@+id/register_button"
+            android:id="@+id/register_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

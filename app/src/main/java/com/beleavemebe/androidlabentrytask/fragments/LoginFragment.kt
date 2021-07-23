@@ -24,14 +24,14 @@ class LoginFragment : Fragment() {
     }
 
     interface Callbacks {
-        fun onRegister(email: String, password: String)
-        fun onLogin()
+        fun onRegisterButton(email: String, password: String)
+        fun onLoginButton(view: View, email: String, password: String)
     }
 
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
-    private lateinit var registerButton: Button
-    private lateinit var loginButton: Button
+    private lateinit var btnRegister: Button
+    private lateinit var btnLogin: Button
 
     private var callbacks: Callbacks? = null
 
@@ -60,14 +60,18 @@ class LoginFragment : Fragment() {
 
     private fun initButtons() {
         refreshButtons()
-        registerButton.setOnClickListener {
-            callbacks?.onRegister(
+        btnRegister.setOnClickListener {
+            callbacks?.onRegisterButton(
                 etEmail.text.toString(),
                 etPassword.text.toString()
             )
         }
-        loginButton.setOnClickListener {
-            callbacks?.onLogin()
+        btnLogin.setOnClickListener {
+            callbacks?.onLoginButton(
+                btnLogin,
+                etEmail.text.toString(),
+                etPassword.text.toString()
+            )
         }
     }
 
@@ -132,10 +136,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun updateButtons(enabled: Boolean) {
-        registerButton.apply {
+        btnRegister.apply {
             isEnabled = enabled
         }
-        loginButton.apply {
+        btnLogin.apply {
             isEnabled = enabled
         }
     }
@@ -143,7 +147,7 @@ class LoginFragment : Fragment() {
     private fun findViewsById(rootView: View) {
         etEmail = rootView.findViewById(R.id.email_et)
         etPassword = rootView.findViewById(R.id.password_et)
-        registerButton = rootView.findViewById(R.id.register_button)
-        loginButton = rootView.findViewById(R.id.login_button)
+        btnRegister = rootView.findViewById(R.id.register_btn)
+        btnLogin = rootView.findViewById(R.id.login_btn)
     }
 }

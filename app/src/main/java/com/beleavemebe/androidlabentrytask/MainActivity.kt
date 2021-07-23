@@ -3,11 +3,15 @@ package com.beleavemebe.androidlabentrytask
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import com.beleavemebe.androidlabentrytask.fragments.LoginFragment
 import com.beleavemebe.androidlabentrytask.fragments.RegisterFragment
 import com.beleavemebe.androidlabentrytask.fragments.UserFragment
 import com.beleavemebe.androidlabentrytask.model.User
+import com.beleavemebe.androidlabentrytask.repositories.UserRepository
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity(),
         LoginFragment.Callbacks,
@@ -27,13 +31,7 @@ class MainActivity : AppCompatActivity(),
             supportFragmentManager.findFragmentById(R.id.fragment_container)
 
         // Initial fragment
-        if (currentFragment == null) {
-            val fragment = LoginFragment.newInstance()
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, fragment)
-                .commit()
-        }
+        if (currentFragment == null) setLoginFragment()
     }
 
     private fun setLoginFragment() {
@@ -52,34 +50,37 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun setUserFragment() {
-        val fragment = UserFragment.newInstance()
+    private fun setUserFragment(user: User) {
+        val fragment = UserFragment.newInstance(user)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
     }
 
-    override fun onRegister(email: String, password: String) {
+    override fun onRegisterButton(email: String, password: String) {
         setRegisterFragment(email, password)
     }
 
-    override fun onLogin() {
-        setUserFragment(
-            // TODO user
-        )
+    override fun onLoginButton(view: View, email: String, password: String) {
+        val user: User? = UserRepository.getInstance().getUser(email).value
+        if (user == null) {
+            Snackbar.make(view, "NULL", Snackbar.LENGTH_SHORT).show()
+        } else if (user.password != password) {
+            Snackbar.make(view, "!=", Snackbar.LENGTH_SHORT).show()
+        } else {
+            setUserFragment(user)
+        }
     }
 
-    override fun onLogout() {
+    override fun onLogoutButton() {
         setLoginFragment()
     }
 
     override fun onRegisterUser(email: String, password: String, name: String, surname: String) {
         val user = User(email, password, name, surname)
-        // TODO add user to database
-        setUserFragment(
-            // TODO user
-        )
+        UserRepository.getInstance().addUser(user)
+        setUserFragment(user)
     }
 
     override fun onCancelRegister() {

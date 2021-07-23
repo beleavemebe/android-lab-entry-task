@@ -82,10 +82,10 @@ class RegisterFragment : Fragment() {
         }
         btnRegister.setOnClickListener {
             callbacks?.onRegisterUser(
-                etEmail.toString(),
-                etPassword.toString(),
-                etName.toString(),
-                etSurname.toString()
+                etEmail.text.toString(),
+                etPassword.text.toString(),
+                etName.text.toString(),
+                etSurname.text.toString()
             )
         }
     }
@@ -96,6 +96,6 @@ class RegisterFragment : Fragment() {
         etName = rootView.findViewById(R.id.name_et)
         etSurname = rootView.findViewById(R.id.surname_et)
         btnExit = rootView.findViewById(R.id.exit_button)
-        btnRegister = rootView.findViewById(R.id.register_button)
+        btnRegister = rootView.findViewById(R.id.register_btn)
     }
 }

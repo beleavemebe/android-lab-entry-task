@@ -9,7 +9,7 @@ object LoginArgsValidator {
 
     fun isEmailValid(email: String?) : Boolean {
         val result = Patterns.EMAIL_ADDRESS.matcher(email ?: "").matches()
-        Log.d(TAG, "Email $email is valid = $result")
+        Log.i(TAG, "Email $email is valid = $result")
         return result
     }
 
@@ -30,7 +30,7 @@ object LoginArgsValidator {
         }
 
         val result = uppercaseLetterIsPresent && lowercaseLetterIsPresent && digitIsPresent
-        Log.d(TAG, "Password $password is valid = $result")
+        Log.i(TAG, "Password $password is valid = $result")
         return result
     }
 }
