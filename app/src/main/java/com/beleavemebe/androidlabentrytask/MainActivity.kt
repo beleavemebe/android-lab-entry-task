@@ -74,6 +74,9 @@ class MainActivity : AppCompatActivity(),
         val user = User(email, password, name, surname)
         UserRepository.getInstance().addUser(user)
         setLoginFragment()
+        showMessage(
+            getString(R.string.registration_success, email)
+        )
     }
 
     override fun onCancelRegister(email: String, password: String) {
@@ -82,21 +85,23 @@ class MainActivity : AppCompatActivity(),
 
     override fun onUserNotFound(email: String, password: String) {
         setLoginFragment(email, password)
-        findViewById<View>(R.id.fragment_container).also {
-            Snackbar.make(
-                it,
-                getString(R.string.user_not_found, email),
-                Snackbar.LENGTH_LONG
-            ).show()
-        }
+        showMessage(
+            getString(R.string.user_not_found, email)
+        )
     }
 
     override fun onPasswordIncorrect() {
         setLoginFragment()
+        showMessage(
+            getString(R.string.incorrect_password)
+        )
+    }
+
+    private fun showMessage(message: String) {
         findViewById<View>(R.id.fragment_container).also {
             Snackbar.make(
                 it,
-                getString(R.string.incorrect_password),
+                message,
                 Snackbar.LENGTH_LONG
             ).show()
         }
