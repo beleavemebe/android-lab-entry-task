@@ -9,16 +9,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.beleavemebe.androidlabentrytask.R
+import com.beleavemebe.androidlabentrytask.UserViewModel
 import com.beleavemebe.androidlabentrytask.model.User
 
 class UserFragment : Fragment() {
     companion object {
-        private const val ARG_USER = "com.beleavemebe.androidlabentrytask.user"
+        private const val ARG_EMAIL = "com.beleavemebe.androidlabentrytask.user"
 
-        fun newInstance(user: User) : UserFragment {
+        fun newInstance(email: String) : UserFragment {
             val args = Bundle().apply {
-                putSerializable(ARG_USER, user)
+                putString(ARG_EMAIL, email)
             }
             return UserFragment().apply {
                 arguments = args
@@ -35,14 +38,24 @@ class UserFragment : Fragment() {
     private lateinit var tvName: TextView
     private lateinit var tvSurname: TextView
     private lateinit var logoutButton: Button
+    private val userViewModel: UserViewModel by lazy {
+        ViewModelProvider(this).get(UserViewModel::class.java)
+    }
 
     private var callbacks: Callbacks? = null
-
-    private lateinit var user: User
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks?
+    }
+
+    private lateinit var user: User
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        user = User("joe@example.com", "qwerty", "Joe", "McGill")
+        val email: String = arguments?.getString(ARG_EMAIL) as String
+        userViewModel.loadUser(email)
     }
 
     override fun onCreateView(
@@ -53,15 +66,26 @@ class UserFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_user, container, false)
 
         findViewsById(rootView)
-        user = arguments?.getSerializable(ARG_USER) as User
-
         logoutButton.setOnClickListener {
             callbacks?.onLogoutButton()
         }
 
-        updateInfoTVs()
-
         return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val email: String = arguments?.getString(ARG_EMAIL) as String
+        userViewModel.loadUser(email)
+        userViewModel.userLiveData.observe(
+            viewLifecycleOwner,
+            Observer { user ->
+                user?.let {
+                    this.user = user
+                    updateInfoTVs()
+                }
+            }
+        )
     }
 
     override fun onDetach() {

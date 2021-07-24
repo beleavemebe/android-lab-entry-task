@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun setUserFragment(user: User) {
-        val fragment = UserFragment.newInstance(user)
+    private fun setUserFragment(email: String) {
+        val fragment = UserFragment.newInstance(email)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(),
         } else if (user.password != password) {
             Snackbar.make(view, "!=", Snackbar.LENGTH_SHORT).show()
         } else {
-            setUserFragment(user)
+            setUserFragment(email)
         }
     }
 
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(),
     override fun onRegisterUser(email: String, password: String, name: String, surname: String) {
         val user = User(email, password, name, surname)
         UserRepository.getInstance().addUser(user)
-        setUserFragment(user)
+        setUserFragment(email)
     }
 
     override fun onCancelRegister() {
