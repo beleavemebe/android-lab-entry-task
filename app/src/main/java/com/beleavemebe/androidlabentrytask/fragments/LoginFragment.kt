@@ -117,7 +117,7 @@ class LoginFragment : Fragment() {
         if (!LoginArgsValidator.isEmailValid(email)) {
             tiPassword.error = null
             if (email != "") {
-                tiEmail.error = "Invalid email"
+                tiEmail.error = getString(R.string.invalid_email)
             }
 
             Log.d(TAG, "Disabled buttons due to invalid email")
@@ -125,8 +125,7 @@ class LoginFragment : Fragment() {
         } else if (!LoginArgsValidator.isPasswordValid(password)) {
             tiEmail.error = null
             if (password != "") {
-                tiPassword.error =
-                    "Password must not be less than 6 characters long, must have an uppercase letter, a lowercase letter and a digit"
+                tiPassword.error = getString(R.string.invalid_password)
             }
             Log.d(TAG, "Disabled buttons due to invalid password")
             updateButtons(enabled=false)

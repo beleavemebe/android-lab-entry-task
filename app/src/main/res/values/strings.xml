@@ -5,11 +5,13 @@
     <string name="name">Name</string>
     <string name="surname">Surname</string>
     <string name="email_et_hint">Enter valid email</string>
+    <string name="password_et_hint">Enter password</string>
     <string name="name_et_hint">Enter your name</string>
     <string name="surname_et_hint">Enter your surname</string>
-    <string name="password_et_hint">Enter password</string>
     <string name="login_button">Log In</string>
     <string name="register_button">Register</string>
     <string name="exit_button">Exit</string>
     <string name="logout_button">Log Out</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_password">Password must not be less than 6 characters long, must have an uppercase letter, a lowercase letter and a digit</string>
 </resources>
