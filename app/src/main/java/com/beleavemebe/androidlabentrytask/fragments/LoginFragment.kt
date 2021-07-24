@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import com.beleavemebe.androidlabentrytask.R
 import com.beleavemebe.androidlabentrytask.utils.LoginArgsValidator
+import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
     companion object {
@@ -30,9 +31,10 @@ class LoginFragment : Fragment() {
 
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
+    private lateinit var tiEmail: TextInputLayout
+    private lateinit var tiPassword: TextInputLayout
     private lateinit var btnRegister: Button
     private lateinit var btnLogin: Button
-
     private var callbacks: Callbacks? = null
 
     override fun onAttach(context: Context) {
@@ -59,7 +61,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun initButtons() {
-        refreshButtons()
+        refreshButtonsAndDisplayErrors()
         btnRegister.setOnClickListener {
             callbacks?.onRegisterButton(
                 etEmail.text.toString(),
@@ -67,10 +69,12 @@ class LoginFragment : Fragment() {
             )
         }
         btnLogin.setOnClickListener {
+            val email = etEmail.text.toString()
+            val password = etPassword.text.toString()
             callbacks?.onLoginButton(
                 btnLogin,
-                etEmail.text.toString(),
-                etPassword.text.toString()
+                email,
+                password
             )
         }
     }
@@ -81,30 +85,14 @@ class LoginFragment : Fragment() {
 
         val emailWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!LoginArgsValidator.isEmailValid(s.toString())) {
-                    // TODO do
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                refreshButtons()
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) = refreshButtonsAndDisplayErrors()
         }
 
         val passwordWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!LoginArgsValidator.isPasswordValid(s.toString())) {
-                    // TODO do
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                refreshButtons()
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) = refreshButtonsAndDisplayErrors()
         }
 
         etEmail.addTextChangedListener(emailWatcher)
@@ -123,13 +111,28 @@ class LoginFragment : Fragment() {
         etPassword.setText("")
     }
 
-    private fun refreshButtons() {
+    private fun refreshButtonsAndDisplayErrors() {
         val email = etEmail.text.toString()
         val password = etPassword.text.toString()
-        if (!LoginArgsValidator.isEmailValid(email) || !LoginArgsValidator.isPasswordValid(password)) {
+        if (!LoginArgsValidator.isEmailValid(email)) {
+            tiPassword.error = null
+            if (email != "") {
+                tiEmail.error = "Invalid email"
+            }
+
+            Log.d(TAG, "Disabled buttons due to invalid email")
             updateButtons(enabled=false)
-            Log.d(TAG, "Disabled buttons due to invalid email/password")
+        } else if (!LoginArgsValidator.isPasswordValid(password)) {
+            tiEmail.error = null
+            if (password != "") {
+                tiPassword.error =
+                    "Password must have an uppercase letter, a lowercase letter and a digit"
+            }
+            Log.d(TAG, "Disabled buttons due to invalid password")
+            updateButtons(enabled=false)
         } else {
+            tiEmail.error = null
+            tiPassword.error = null
             updateButtons(enabled=true)
             Log.d(TAG, "Enabled buttons, email & password are OK")
         }
@@ -149,5 +152,7 @@ class LoginFragment : Fragment() {
         etPassword = rootView.findViewById(R.id.password_et)
         btnRegister = rootView.findViewById(R.id.register_btn)
         btnLogin = rootView.findViewById(R.id.login_btn)
+        tiEmail = rootView.findViewById(R.id.email_ti)
+        tiPassword = rootView.findViewById(R.id.password_ti)
     }
 }
