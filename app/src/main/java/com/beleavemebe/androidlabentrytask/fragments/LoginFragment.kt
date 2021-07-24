@@ -60,6 +60,25 @@ class LoginFragment : Fragment() {
         return rootView
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() called")
+
+        addTextWatchers()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "onDestroyView() called")
+        etEmail.setText("")
+        etPassword.setText("")
+    }
+
     private fun initButtons() {
         refreshButtonsAndDisplayErrors()
         btnRegister.setOnClickListener {
@@ -77,38 +96,6 @@ class LoginFragment : Fragment() {
                 password
             )
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart() called")
-
-        val emailWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) = refreshButtonsAndDisplayErrors()
-        }
-
-        val passwordWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) = refreshButtonsAndDisplayErrors()
-        }
-
-        etEmail.addTextChangedListener(emailWatcher)
-        etPassword.addTextChangedListener(passwordWatcher)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callbacks = null
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d(TAG, "onDestroyView() called")
-        etEmail.setText("")
-        etPassword.setText("")
     }
 
     private fun refreshButtonsAndDisplayErrors() {
@@ -144,6 +131,22 @@ class LoginFragment : Fragment() {
         btnLogin.apply {
             isEnabled = enabled
         }
+    }
+
+    private fun addTextWatchers() {
+        val emailWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) = refreshButtonsAndDisplayErrors()
+        }
+        val passwordWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) = refreshButtonsAndDisplayErrors()
+        }
+
+        etEmail.addTextChangedListener(emailWatcher)
+        etPassword.addTextChangedListener(passwordWatcher)
     }
 
     private fun findViewsById(rootView: View) {

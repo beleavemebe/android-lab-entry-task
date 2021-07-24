@@ -2,6 +2,8 @@ package com.beleavemebe.androidlabentrytask.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.beleavemebe.androidlabentrytask.R
+import com.google.android.material.textfield.TextInputLayout
 
 class RegisterFragment : Fragment() {
     companion object {
@@ -38,6 +41,8 @@ class RegisterFragment : Fragment() {
     private lateinit var etPassword: EditText
     private lateinit var etName: EditText
     private lateinit var etSurname: EditText
+    private lateinit var tiName: TextInputLayout
+    private lateinit var tiSurname: TextInputLayout
     private lateinit var btnExit: Button
     private lateinit var btnRegister: Button
 
@@ -62,6 +67,11 @@ class RegisterFragment : Fragment() {
         return rootView
     }
 
+    override fun onStart() {
+        super.onStart()
+        addTextWatchers()
+    }
+
     override fun onDetach() {
         super.onDetach()
         callbacks = null
@@ -81,13 +91,47 @@ class RegisterFragment : Fragment() {
             callbacks?.onCancelRegister()
         }
         btnRegister.setOnClickListener {
-            callbacks?.onRegisterUser(
-                etEmail.text.toString(),
-                etPassword.text.toString(),
-                etName.text.toString(),
-                etSurname.text.toString()
-            )
+            val email = etEmail.text.toString()
+            val password = etPassword.text.toString()
+            val name = etName.text.toString()
+            val surname = etSurname.text.toString()
+            when {
+                name == "" -> {
+                    tiName.error = getString(R.string.empty_field)
+                    tiSurname.error = null
+                }
+                surname == "" -> {
+                    tiName.error = null
+                    tiSurname.error = getString(R.string.empty_field)
+                }
+                else -> {
+                    tiName.error = null
+                    tiSurname.error = null
+                    callbacks?.onRegisterUser(
+                        email,
+                        password,
+                        name,
+                        surname
+                    )
+                }
+            }
         }
+    }
+
+    private fun addTextWatchers() {
+        val nameWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) = tiName.setError(null)
+        }
+        val surnameWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) = tiSurname.setError(null)
+        }
+
+        etName.addTextChangedListener(nameWatcher)
+        etSurname.addTextChangedListener(surnameWatcher)
     }
 
     private fun findViewsById(rootView: View) {
@@ -95,6 +139,8 @@ class RegisterFragment : Fragment() {
         etPassword = rootView.findViewById(R.id.password_et)
         etName = rootView.findViewById(R.id.name_et)
         etSurname = rootView.findViewById(R.id.surname_et)
+        tiName = rootView.findViewById(R.id.name_ti)
+        tiSurname = rootView.findViewById(R.id.surname_ti)
         btnExit = rootView.findViewById(R.id.exit_button)
         btnRegister = rootView.findViewById(R.id.register_btn)
     }
