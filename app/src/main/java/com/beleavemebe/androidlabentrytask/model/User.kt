@@ -10,4 +10,8 @@ data class User(
     val password: String,
     val name: String,
     val surname: String,
-)  : Serializable
+) {
+    companion object {
+        val USER_NONE = User("", "", "", "")
+    }
+}

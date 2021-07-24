@@ -15,4 +15,6 @@
     <string name="invalid_email">Invalid email</string>
     <string name="invalid_password">Password must not be less than 6 characters long, must have an uppercase letter, a lowercase letter and a digit</string>
     <string name="empty_field">Empty field</string>
+    <string name="incorrect_password">Incorrect password</string>
+    <string name="user_not_found">User %1$s not found</string>
 </resources>

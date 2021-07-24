@@ -16,8 +16,9 @@ import com.google.android.material.textfield.TextInputLayout
 
 class RegisterFragment : Fragment() {
     companion object {
-        private const val ARG_EMAIL = "com.beleavemebe.androidlabentrytask.email"
-        private const val ARG_PASSWORD = "com.beleavemebe.androidlabentrytask.password"
+        private const val TAG = "RegisterFragment"
+        private const val ARG_EMAIL = "com.beleavemebe.androidlabentrytask.$TAG.email"
+        private const val ARG_PASSWORD = "com.beleavemebe.androidlabentrytask.$TAG.password"
 
         fun newInstance(email: String, password: String) : RegisterFragment {
             val args = Bundle().apply {
@@ -35,7 +36,7 @@ class RegisterFragment : Fragment() {
                            password: String,
                            name: String,
                            surname: String)
-        fun onCancelRegister()
+        fun onCancelRegister(email: String, password: String)
     }
 
     private lateinit var etEmail: EditText
@@ -90,8 +91,11 @@ class RegisterFragment : Fragment() {
 
     private fun initButtons() {
         btnExit.setOnClickListener {
-            callbacks?.onCancelRegister()
+            val email = etEmail.text.toString()
+            val password = etPassword.text.toString()
+            callbacks?.onCancelRegister(email, password)
         }
+
         btnRegister.setOnClickListener {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()

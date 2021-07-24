@@ -18,11 +18,14 @@ import com.beleavemebe.androidlabentrytask.model.User
 
 class UserFragment : Fragment() {
     companion object {
-        private const val ARG_EMAIL = "com.beleavemebe.androidlabentrytask.user"
+        private const val TAG = "UserFragment"
+        private const val ARG_EMAIL = "com.beleavemebe.androidlabentrytask.$TAG.email"
+        private const val ARG_PASSWORD = "com.beleavemebe.androidlabentrytask.$TAG.password"
 
-        fun newInstance(email: String) : UserFragment {
+        fun newInstance(email: String, password: String): UserFragment {
             val args = Bundle().apply {
                 putString(ARG_EMAIL, email)
+                putString(ARG_PASSWORD, password)
             }
             return UserFragment().apply {
                 arguments = args
@@ -32,6 +35,8 @@ class UserFragment : Fragment() {
 
     interface Callbacks {
         fun onLogoutButton()
+        fun onUserNotFound(email: String, password: String)
+        fun onPasswordIncorrect()
     }
 
     private lateinit var avatar: ImageView
@@ -55,7 +60,7 @@ class UserFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        user = User("joe@example.com", "qwerty", "Joe", "McGill")
+        user = User.USER_NONE
         val email: String = arguments?.getString(ARG_EMAIL) as String
         userViewModel.loadUser(email)
     }
@@ -78,13 +83,22 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val email: String = arguments?.getString(ARG_EMAIL) as String
+        val password: String = arguments?.getString(ARG_PASSWORD) as String
         userViewModel.loadUser(email)
         userViewModel.userLiveData.observe(
             viewLifecycleOwner,
             Observer { user ->
-                user?.let {
-                    this.user = user
-                    updateInfoTVs()
+                when {
+                    user == null -> {
+                        callbacks?.onUserNotFound(email, password)
+                    }
+                    user.password != password -> {
+                        callbacks?.onPasswordIncorrect()
+                    }
+                    else -> {
+                        this.user = user
+                        updateInfoTVs()
+                    }
                 }
             }
         )

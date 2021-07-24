@@ -19,15 +19,23 @@ import com.google.android.material.textfield.TextInputLayout
 class LoginFragment : Fragment() {
     companion object {
         private const val TAG = "LoginFragment"
+        private const val ARG_EMAIL = "com.beleavemebe.androidlabentrytask.$TAG.email"
+        private const val ARG_PASSWORD = "com.beleavemebe.androidlabentrytask.$TAG.password"
 
-        fun newInstance() : LoginFragment {
-            return LoginFragment()
+        fun newInstance(email: String, password: String) : LoginFragment {
+            val args = Bundle().apply {
+                putString(ARG_EMAIL, email)
+                putString(ARG_PASSWORD, password)
+            }
+            return LoginFragment().apply {
+                arguments = args
+            }
         }
     }
 
     interface Callbacks {
         fun onRegisterButton(email: String, password: String)
-        fun onLoginButton(view: View, email: String, password: String)
+        fun onLoginButton(email: String, password: String)
     }
 
     private lateinit var etEmail: EditText
@@ -57,6 +65,7 @@ class LoginFragment : Fragment() {
         Log.d(TAG, "onCreateView(...) called")
 
         findViewsById(rootView)
+        initETs()
         initButtons()
 
         return rootView
@@ -81,6 +90,13 @@ class LoginFragment : Fragment() {
         etPassword.setText("")
     }
 
+    private fun initETs() {
+        val email: String = arguments?.getString(ARG_EMAIL) as String
+        val password: String = arguments?.getString(ARG_PASSWORD) as String
+        etEmail.setText(email)
+        etPassword.setText(password)
+    }
+
     private fun initButtons() {
         refreshButtonsAndDisplayErrors()
         btnRegister.setOnClickListener {
@@ -93,7 +109,6 @@ class LoginFragment : Fragment() {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
             callbacks?.onLoginButton(
-                btnLogin,
                 email,
                 password
             )

@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity(),
         if (currentFragment == null) setLoginFragment()
     }
 
-    private fun setLoginFragment() {
-        val fragment = LoginFragment.newInstance()
+    private fun setLoginFragment(email: String = "", password: String = "") {
+        val fragment = LoginFragment.newInstance(email, password)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)
@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun setUserFragment(email: String) {
-        val fragment = UserFragment.newInstance(email)
+    private fun setUserFragment(email: String, password: String="") {
+        val fragment = UserFragment.newInstance(email, password)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)
@@ -62,15 +62,8 @@ class MainActivity : AppCompatActivity(),
         setRegisterFragment(email, password)
     }
 
-    override fun onLoginButton(view: View, email: String, password: String) {
-        val user: User? = UserRepository.getInstance().getUser(email).value
-        if (user == null) {
-            Snackbar.make(view, "NULL", Snackbar.LENGTH_SHORT).show()
-        } else if (user.password != password) {
-            Snackbar.make(view, "!=", Snackbar.LENGTH_SHORT).show()
-        } else {
-            setUserFragment(email)
-        }
+    override fun onLoginButton(email: String, password: String) {
+        setUserFragment(email)
     }
 
     override fun onLogoutButton() {
@@ -80,10 +73,32 @@ class MainActivity : AppCompatActivity(),
     override fun onRegisterUser(email: String, password: String, name: String, surname: String) {
         val user = User(email, password, name, surname)
         UserRepository.getInstance().addUser(user)
-        setUserFragment(email)
+        setLoginFragment()
     }
 
-    override fun onCancelRegister() {
+    override fun onCancelRegister(email: String, password: String) {
+        setLoginFragment(email, password)
+    }
+
+    override fun onUserNotFound(email: String, password: String) {
+        setLoginFragment(email, password)
+        findViewById<View>(R.id.fragment_container).also {
+            Snackbar.make(
+                it,
+                getString(R.string.user_not_found, email),
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    override fun onPasswordIncorrect() {
         setLoginFragment()
+        findViewById<View>(R.id.fragment_container).also {
+            Snackbar.make(
+                it,
+                getString(R.string.incorrect_password),
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
     }
 }
