@@ -3,9 +3,11 @@ package com.beleavemebe.androidlabentrytask
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import com.beleavemebe.androidlabentrytask.fragments.LoginFragment
 import com.beleavemebe.androidlabentrytask.fragments.RegisterFragment
 import com.beleavemebe.androidlabentrytask.fragments.UserFragment
@@ -18,6 +20,13 @@ class MainActivity : AppCompatActivity(),
         UserFragment.Callbacks,
         RegisterFragment.Callbacks
 {
+    companion object {
+        private const val TAG = "MainActivity"
+        private const val ARG_USER_LOGGED_IN = "com.beleavemebe.androidlabentrytask.$TAG.user_logged_in"
+        private const val ARG_EMAIL = "com.beleavemebe.androidlabentrytask.$TAG.email"
+        private const val ARG_PASSWORD = "com.beleavemebe.androidlabentrytask.$TAG.password"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,8 +39,22 @@ class MainActivity : AppCompatActivity(),
         val currentFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_container)
 
-        // Initial fragment
-        if (currentFragment == null) setLoginFragment()
+        // Stay logged in
+        if (savedInstanceState?.getBoolean(ARG_USER_LOGGED_IN, false) == true) {
+            val email = savedInstanceState.getString(ARG_EMAIL, "")
+            val password = savedInstanceState.getString(ARG_PASSWORD, "")
+            loginViewModel.isUserLoggedIn = true
+            loginViewModel.currUserEmail = email
+            loginViewModel.currUserPassword = password
+            setLoginFragment(email, password)
+        } else if (currentFragment == null) {
+            // Initial fragment
+            setLoginFragment()
+        }
+    }
+
+    private val loginViewModel: LoginViewModel by lazy {
+        ViewModelProvider(this).get(LoginViewModel::class.java)
     }
 
     private fun setLoginFragment(email: String = "", password: String = "") {
@@ -50,7 +73,7 @@ class MainActivity : AppCompatActivity(),
             .commit()
     }
 
-    private fun setUserFragment(email: String, password: String="") {
+    private fun setUserFragment(email: String, password: String) {
         val fragment = UserFragment.newInstance(email, password)
         supportFragmentManager
             .beginTransaction()
@@ -63,10 +86,16 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onLoginButton(email: String, password: String) {
-        setUserFragment(email)
+        setUserFragment(email, password)
     }
 
-    override fun onLogoutButton() {
+    override fun onUserLogout() {
+        loginViewModel.apply {
+            isUserLoggedIn = false
+            currUserEmail = ""
+            currUserPassword = ""
+        }
+        Log.d(TAG, loginViewModel.toString())
         setLoginFragment()
     }
 
@@ -95,6 +124,24 @@ class MainActivity : AppCompatActivity(),
         showMessage(
             getString(R.string.incorrect_password)
         )
+    }
+
+    override fun onLoginSuccess(email: String, password: String) {
+        loginViewModel.apply {
+            isUserLoggedIn = true
+            currUserEmail = email
+            currUserPassword = password
+        }
+        Log.d(TAG, loginViewModel.toString())
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.apply {
+            putBoolean(ARG_USER_LOGGED_IN, loginViewModel.isUserLoggedIn)
+            putString(ARG_EMAIL, loginViewModel.currUserEmail)
+            putString(ARG_PASSWORD, loginViewModel.currUserPassword)
+        }
     }
 
     private fun showMessage(message: String) {

@@ -34,9 +34,10 @@ class UserFragment : Fragment() {
     }
 
     interface Callbacks {
-        fun onLogoutButton()
+        fun onUserLogout()
         fun onUserNotFound(email: String, password: String)
         fun onPasswordIncorrect()
+        fun onLoginSuccess(email: String, password: String)
     }
 
     private lateinit var avatar: ImageView
@@ -74,7 +75,7 @@ class UserFragment : Fragment() {
 
         findViewsById(rootView)
         logoutButton.setOnClickListener {
-            callbacks?.onLogoutButton()
+            callbacks?.onUserLogout()
         }
 
         return rootView

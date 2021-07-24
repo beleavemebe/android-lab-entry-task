@@ -13,7 +13,7 @@
         android:layout_marginTop="80dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/anon"
+        android:src="@drawable/user_def"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
