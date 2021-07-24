@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.beleavemebe.androidlabentrytask.MainActivity
 import com.beleavemebe.androidlabentrytask.R
 import com.google.android.material.textfield.TextInputLayout
 
@@ -50,6 +51,7 @@ class RegisterFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        assert(context is MainActivity)
         callbacks = context as Callbacks?
     }
 

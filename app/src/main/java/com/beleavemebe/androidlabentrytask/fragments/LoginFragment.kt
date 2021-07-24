@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import com.beleavemebe.androidlabentrytask.MainActivity
 import com.beleavemebe.androidlabentrytask.R
 import com.beleavemebe.androidlabentrytask.utils.LoginArgsValidator
 import com.google.android.material.textfield.TextInputLayout
@@ -39,6 +40,7 @@ class LoginFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        assert(context is MainActivity)
         callbacks = context as Callbacks?
     }
 

@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.beleavemebe.androidlabentrytask.MainActivity
 import com.beleavemebe.androidlabentrytask.R
 import com.beleavemebe.androidlabentrytask.UserViewModel
 import com.beleavemebe.androidlabentrytask.model.User
@@ -46,6 +47,7 @@ class UserFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        assert(context is MainActivity)
         callbacks = context as Callbacks?
     }
 
