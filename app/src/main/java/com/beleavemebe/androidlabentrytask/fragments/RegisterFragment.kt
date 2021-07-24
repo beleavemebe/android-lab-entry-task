@@ -101,6 +101,7 @@ class RegisterFragment : Fragment() {
             val password = etPassword.text.toString()
             val name = etName.text.toString()
             val surname = etSurname.text.toString()
+            // НАЧАЛО КОДА, КОТОРЫЙ УКРАЛ ВАДИМ
             when {
                 name == "" -> {
                     tiName.error = getString(R.string.empty_field)
@@ -121,6 +122,7 @@ class RegisterFragment : Fragment() {
                     )
                 }
             }
+            // КОНЕЦ КОДА, КОТОРЫЙ УКРАЛ ВАДИМ
         }
     }
 
