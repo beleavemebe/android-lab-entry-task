@@ -126,7 +126,7 @@ class LoginFragment : Fragment() {
             tiEmail.error = null
             if (password != "") {
                 tiPassword.error =
-                    "Password must have an uppercase letter, a lowercase letter and a digit"
+                    "Password must not be less than 6 characters long, must have an uppercase letter, a lowercase letter and a digit"
             }
             Log.d(TAG, "Disabled buttons due to invalid password")
             updateButtons(enabled=false)
