@@ -32,8 +32,6 @@ class UserRepository private constructor(context: Context) {
     private val userDao = database.userDao()
     private val executor: Executor = Executors.newSingleThreadExecutor()
 
-    fun getUsers(): LiveData<List<User>> = userDao.getUsers()
-
     fun getUser(email: String): LiveData<User?> = userDao.getUser(email)
 
     fun addUser(user: User) {

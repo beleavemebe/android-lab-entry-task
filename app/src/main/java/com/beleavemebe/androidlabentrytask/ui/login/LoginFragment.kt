@@ -1,4 +1,4 @@
-package com.beleavemebe.androidlabentrytask.fragments
+package com.beleavemebe.androidlabentrytask.ui.login
 
 import android.content.Context
 import android.os.Bundle
@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import com.beleavemebe.androidlabentrytask.MainActivity
 import com.beleavemebe.androidlabentrytask.R
+import com.beleavemebe.androidlabentrytask.ui.MainActivity
 import com.beleavemebe.androidlabentrytask.utils.LoginArgsValidator
 import com.google.android.material.textfield.TextInputLayout
 
@@ -50,10 +50,6 @@ class LoginFragment : Fragment() {
         super.onAttach(context)
         assert(context is MainActivity)
         callbacks = context as Callbacks?
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

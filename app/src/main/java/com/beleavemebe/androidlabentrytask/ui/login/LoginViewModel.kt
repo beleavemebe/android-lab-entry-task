@@ -1,4 +1,4 @@
-package com.beleavemebe.androidlabentrytask
+package com.beleavemebe.androidlabentrytask.ui.login
 
 import androidx.lifecycle.ViewModel
 

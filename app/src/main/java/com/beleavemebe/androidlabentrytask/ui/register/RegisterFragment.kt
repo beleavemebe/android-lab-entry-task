@@ -1,4 +1,4 @@
-package com.beleavemebe.androidlabentrytask.fragments
+package com.beleavemebe.androidlabentrytask.ui.register
 
 import android.content.Context
 import android.os.Bundle
@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import com.beleavemebe.androidlabentrytask.MainActivity
 import com.beleavemebe.androidlabentrytask.R
+import com.beleavemebe.androidlabentrytask.ui.MainActivity
 import com.google.android.material.textfield.TextInputLayout
 
 class RegisterFragment : Fragment() {

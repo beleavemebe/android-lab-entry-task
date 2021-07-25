@@ -1,4 +1,4 @@
-package com.beleavemebe.androidlabentrytask
+package com.beleavemebe.androidlabentrytask.ui.user
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

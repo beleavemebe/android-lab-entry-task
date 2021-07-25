@@ -1,18 +1,19 @@
-package com.beleavemebe.androidlabentrytask
+package com.beleavemebe.androidlabentrytask.ui
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
-import com.beleavemebe.androidlabentrytask.fragments.LoginFragment
-import com.beleavemebe.androidlabentrytask.fragments.RegisterFragment
-import com.beleavemebe.androidlabentrytask.fragments.UserFragment
+import com.beleavemebe.androidlabentrytask.R
 import com.beleavemebe.androidlabentrytask.model.User
 import com.beleavemebe.androidlabentrytask.repositories.UserRepository
+import com.beleavemebe.androidlabentrytask.ui.login.LoginFragment
+import com.beleavemebe.androidlabentrytask.ui.login.LoginViewModel
+import com.beleavemebe.androidlabentrytask.ui.register.RegisterFragment
+import com.beleavemebe.androidlabentrytask.ui.user.UserFragment
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity(),

@@ -1,4 +1,4 @@
-package com.beleavemebe.androidlabentrytask.fragments
+package com.beleavemebe.androidlabentrytask.ui.user
 
 import android.content.Context
 import android.os.Bundle
@@ -11,10 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.beleavemebe.androidlabentrytask.MainActivity
 import com.beleavemebe.androidlabentrytask.R
-import com.beleavemebe.androidlabentrytask.UserViewModel
 import com.beleavemebe.androidlabentrytask.model.User
+import com.beleavemebe.androidlabentrytask.ui.MainActivity
 
 class UserFragment : Fragment() {
     companion object {
